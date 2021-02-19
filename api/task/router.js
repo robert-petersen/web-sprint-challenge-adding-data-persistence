@@ -14,47 +14,47 @@ const router = express.Router();
 
 router.get("/", (req, res) => {
   Tasks.find()
-    .then(projects => {
-      const updatedProjects = projects.map( project => {
-        if ( project.project_completed === 0 ) {
+    .then(tasks => {
+      const updatedTasks = tasks.map( task => {
+        if ( task.task_completed === 0 ) {
           return ({
-            ...project,
-            project_completed: false
+            ...task,
+            task_completed: false
           });
         } else {
           return ({
-            ...project,
-            project_completed: true
+            ...task,
+            task_completed: true
           });
         }
       })
-      res.status(200).json(updatedProjects);
+      res.status(200).json(updatedTasks);
     })
     .catch(err => {
-      res.status(500).json({ message: "Failed to get projects", error: err.message });
+      res.status(500).json({ message: "Failed to get tasks", error: err.message });
     });
 });
 
 router.post("/", (req, res) => {
-  const newProject = req.body;
-  Tasks.add(newProject)
-    .then(project => {
-      let translatedProject = project;
-      if ( project.project_completed === 0 ) {
-        translatedProject = {
-          ...project,
-          project_completed: false
+  const newTask = req.body;
+  Tasks.add(newTask)
+    .then(task => {
+      let translatedTask = task;
+      if ( task.task_completed === 0 ) {
+        translatedTask = {
+          ...task,
+          task_completed: false
         };
       } else {
-        translatedProject = {
-          ...project,
-          project_completed: true
+        translatedTask = {
+          ...task,
+          task_completed: true
         };
       }
-      res.status(201).json(translatedProject);
+      res.status(201).json(translatedTask);
     })
     .catch(err => {
-      res.status(500).json({ message: "Failed to add project", error: err.message });
+      res.status(500).json({ message: "Failed to add task", error: err.message });
     });
 });
 
